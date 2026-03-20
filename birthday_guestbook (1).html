@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>👻 주동인 생일 메시지 👻</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#0a0a0f;--dark:#12121a;--panel:#1a1a28;--border:#2e2e48;
+  --accent:#c084fc;--accent2:#f472b6;--green:#4ade80;--red:#f87171;
+  --text:#e2e8f0;--muted:#64748b;--warning:#fbbf24;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Gaegu',cursive;background:var(--black);color:var(--text);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.6;}
+.ghost-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.ghost{position:absolute;opacity:.06;animation:ghostFloat linear infinite;}
+@keyframes ghostFloat{0%{transform:translateY(110vh) rotate(-10deg);opacity:0;}10%{opacity:.06;}90%{opacity:.06;}100%{transform:translateY(-15vh) rotate(10deg);opacity:0;}}
+.container{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:48px 20px 80px;}
+.header{text-align:center;margin-bottom:48px;}
+.skull-row{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:16px;}
+.skull{font-size:1.8rem;animation:skullPulse 2s ease-in-out infinite;}
+.skull:nth-child(2){animation-delay:.3s;}.skull:nth-child(3){animation-delay:.6s;}
+@keyframes skullPulse{0%,100%{transform:scale(1) rotate(-5deg);}50%{transform:scale(1.15) rotate(5deg);}}
+.header-eyebrow{font-size:.9rem;letter-spacing:.25em;color:var(--accent);text-transform:uppercase;margin-bottom:10px;}
+.header-title{font-family:'Black Han Sans',sans-serif;font-size:clamp(2.4rem,8vw,4rem);line-height:1.1;background:linear-gradient(135deg,#e879f9,#c084fc,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
+.header-sub{font-size:1.2rem;color:var(--muted);margin-bottom:20px;}
+.header-date{display:inline-block;border:1.5px solid var(--border);background:var(--panel);padding:6px 20px;border-radius:50px;font-size:1rem;color:var(--accent);letter-spacing:.1em;}
+.warning-banner{border:1.5px solid rgba(251,191,36,.25);background:rgba(251,191,36,.05);border-radius:14px;padding:14px 18px;display:flex;align-items:flex-start;gap:12px;margin-bottom:36px;font-size:1rem;line-height:1.7;color:rgba(251,191,36,.85);}
+.warning-banner .wi{font-size:1.4rem;flex-shrink:0;margin-top:2px;}
+.form-card{background:var(--panel);border:1.5px solid var(--border);border-radius:20px;padding:28px;margin-bottom:36px;position:relative;overflow:hidden;}
+.form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#c084fc,#f472b6,#818cf8);}
+.form-title{font-family:'Black Han Sans',sans-serif;font-size:1.3rem;color:var(--accent);margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+.form-row{display:flex;gap:12px;flex-wrap:wrap;}
+.form-group{display:flex;flex-direction:column;gap:6px;flex:1;min-width:180px;}
+.form-group.full{flex:100%;}
+label{font-size:.9rem;color:var(--muted);letter-spacing:.05em;}
+input[type=text],input[type=password],textarea{background:var(--dark);border:1.5px solid var(--border);border-radius:12px;padding:12px 16px;font-family:'Gaegu',cursive;font-size:1.1rem;color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s;width:100%;}
+input[type=text]:focus,input[type=password]:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(192,132,252,.15);}
+textarea{resize:vertical;min-height:110px;}
+.pw-hint{font-size:.85rem;color:var(--muted);margin-top:3px;line-height:1.5;}
+.submit-btn{width:100%;margin-top:18px;background:linear-gradient(135deg,#9333ea,#c084fc);color:white;border:none;padding:14px;border-radius:12px;font-family:'Black Han Sans',sans-serif;font-size:1.15rem;cursor:pointer;letter-spacing:.05em;transition:all .3s;}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(147,51,234,.4);}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.err-msg{color:var(--red);font-size:.9rem;margin-top:8px;display:none;text-align:center;}
+.ok-msg{color:var(--green);font-size:.95rem;margin-top:8px;display:none;text-align:center;}
+.messages-header{display:flex;align-items:center;margin-bottom:20px;}
+.messages-title{font-family:'Black Han Sans',sans-serif;font-size:1.4rem;display:flex;align-items:center;gap:8px;}
+.msg-count{font-family:'Gaegu',cursive;background:var(--panel);border:1.5px solid var(--border);padding:3px 12px;border-radius:50px;font-size:.9rem;color:var(--accent);}
+.admin-bar{background:rgba(192,132,252,.08);border:1.5px solid rgba(192,132,252,.3);border-radius:12px;padding:10px 16px;font-size:.95rem;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.logout-btn{margin-left:auto;background:transparent;border:1.5px solid rgba(192,132,252,.4);color:var(--accent);padding:3px 12px;border-radius:50px;font-family:'Gaegu',cursive;font-size:.85rem;cursor:pointer;transition:all .2s;}
+.logout-btn:hover{background:rgba(192,132,252,.2);}
+.msg-list{display:flex;flex-direction:column;gap:14px;}
+.msg-card{background:var(--panel);border:1.5px solid var(--border);border-radius:16px;padding:20px;position:relative;overflow:hidden;transition:border-color .2s,transform .2s;animation:cardIn .4s cubic-bezier(.36,.07,.19,.97) both;}
+@keyframes cardIn{0%{transform:translateY(20px) scale(.97);opacity:0;}100%{transform:translateY(0) scale(1);opacity:1;}}
+.msg-card:hover{border-color:rgba(192,132,252,.35);transform:translateY(-2px);}
+.msg-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:linear-gradient(180deg,#c084fc,#f472b6);border-radius:3px 0 0 3px;}
+.msg-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px;}
+.msg-name{font-family:'Black Han Sans',sans-serif;font-size:1.05rem;color:var(--accent);}
+.msg-time{font-size:.8rem;color:var(--muted);flex-shrink:0;margin-top:2px;}
+.msg-text{font-size:1.1rem;line-height:1.8;color:var(--text);white-space:pre-wrap;word-break:break-word;}
+.msg-actions{display:flex;gap:8px;margin-top:12px;}
+.act-btn{background:transparent;border:1.5px solid var(--border);color:var(--muted);padding:4px 12px;border-radius:50px;font-family:'Gaegu',cursive;font-size:.85rem;cursor:pointer;transition:all .2s;}
+.act-btn.edit:hover{border-color:#818cf8;color:#818cf8;}
+.act-btn.del:hover{border-color:var(--red);color:var(--red);}
+.empty-state{text-align:center;padding:48px 20px;color:var(--muted);}
+.loading{text-align:center;padding:32px;color:var(--muted);font-size:1.1rem;}
+.spinner{display:inline-block;width:24px;height:24px;border:2.5px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:8px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.modal-bg{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-bg.open{display:flex;}
+.modal{background:var(--panel);border:1.5px solid var(--border);border-radius:20px;padding:28px;width:100%;max-width:400px;position:relative;}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#c084fc,#f472b6);border-radius:20px 20px 0 0;}
+.modal-title{font-family:'Black Han Sans',sans-serif;font-size:1.2rem;margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+.modal-btns{display:flex;gap:10px;margin-top:16px;}
+.modal-confirm{flex:1;background:linear-gradient(135deg,#9333ea,#c084fc);color:white;border:none;padding:12px;border-radius:10px;font-family:'Black Han Sans',sans-serif;font-size:1rem;cursor:pointer;}
+.modal-confirm:disabled{opacity:.5;cursor:not-allowed;}
+.modal-cancel{flex:1;background:var(--dark);border:1.5px solid var(--border);color:var(--muted);padding:12px;border-radius:10px;font-family:'Gaegu',cursive;font-size:1rem;cursor:pointer;}
+.modal-cancel:hover{border-color:var(--accent);color:var(--accent);}
+.modal-err{color:var(--red);font-size:.9rem;margin-top:6px;display:none;}
+::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:var(--dark);}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+@media(max-width:500px){.form-row{flex-direction:column;}.form-group{min-width:unset;}}
+</style>
+</head>
+<body>
+<div class="ghost-bg" id="ghostBg"></div>
+<div class="container">
+  <header class="header">
+    <div class="skull-row">
+      <span class="skull">💀</span><span class="skull">👻</span><span class="skull">💀</span>
+    </div>
+    <p class="header-eyebrow">🕯️ Secret Birthday Message 🕯️</p>
+    <h1 class="header-title">주동인 생일을<br>축하해줘</h1>
+    <p class="header-sub">4월 2일, 그 날을 위한 메시지</p>
+    <span class="header-date">👻 2026 · 04 · 02 👻</span>
+  </header>
+  <div class="warning-banner">
+    <span class="wi">🤫</span>
+    <div>
+      <strong style="color:var(--warning)">비밀을 지켜줘.</strong><br>
+      이 페이지의 존재를 주동인한테 들키면 안 돼. 메시지는 생일날 전달될 거야.<br>
+      링크를 절대 주동인에게 보내지 말 것. 🕯️
+    </div>
+  </div>
+  <div class="form-card">
+    <p class="form-title">💬 메시지 남기기</p>
+    <div class="form-row">
+      <div class="form-group">
+        <label>이름 (닉네임도 OK)</label>
+        <input type="text" id="fName" placeholder="홍길동" maxlength="20">
+      </div>
+      <div class="form-group">
+        <label>비밀번호 <span style="color:var(--accent2)">*</span></label>
+        <input type="password" id="fPw" placeholder="수정할 때 필요해" maxlength="20">
+        <span class="pw-hint">수정·삭제할 때 사용해. 잊지 마 👻</span>
+      </div>
+    </div>
+    <div class="form-row" style="margin-top:12px">
+      <div class="form-group full">
+        <label>주동인에게 한 마디</label>
+        <textarea id="fMsg" placeholder="생일 축하 메시지를 남겨줘 🕯️&#10;(비밀은 꼭 지켜줘...)" maxlength="300"></textarea>
+      </div>
+    </div>
+    <p class="err-msg" id="fErr"></p>
+    <p class="ok-msg" id="fOk">👻 메시지가 전달됐어!</p>
+    <button class="submit-btn" id="submitBtn" onclick="submitMsg()">👻 메시지 남기기</button>
+  </div>
+  <div class="messages-header">
+    <p class="messages-title">
+      💀 메시지들&nbsp;
+      <span class="msg-count" id="msgCount">…</span>
+    </p>
+  </div>
+  <div id="adminBar" class="admin-bar" style="display:none">
+    🔐 관리자 모드
+    <button class="logout-btn" onclick="adminLogout()">로그아웃</button>
+  </div>
+  <div id="msgList">
+    <div class="loading"><span class="spinner"></span>불러오는 중...</div>
+  </div>
+</div>
+
+<!-- 비밀번호 확인 모달 -->
+<div class="modal-bg" id="pwModal">
+  <div class="modal">
+    <p class="modal-title" id="pwModalTitle">🔑 비밀번호 확인</p>
+    <label style="font-size:.9rem;color:var(--muted)">작성 시 설정한 비밀번호</label>
+    <input type="password" id="pwInput" placeholder="비밀번호 입력" style="margin-top:8px"
+      onkeydown="if(event.key==='Enter')confirmPw()">
+    <p class="modal-err" id="pwErr">❌ 비밀번호가 틀렸어!</p>
+    <div class="modal-btns">
+      <button class="modal-confirm" onclick="confirmPw()">확인</button>
+      <button class="modal-cancel" onclick="closePwModal()">취소</button>
+    </div>
+  </div>
+</div>
+
+<!-- 수정 모달 -->
+<div class="modal-bg" id="editModal">
+  <div class="modal">
+    <p class="modal-title">✏️ 메시지 수정</p>
+    <textarea id="editText" style="min-height:120px;margin-top:4px" maxlength="300"></textarea>
+    <div class="modal-btns">
+      <button class="modal-confirm" id="editConfirmBtn" onclick="confirmEdit()">💾 저장</button>
+      <button class="modal-cancel" onclick="closeEditModal()">취소</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+
+/* ── 설정 ── */
+var API = 'https://script.google.com/macros/s/AKfycbzXEl7kyZ7q7Ugzo2aeoe3c8sp45LIUr6kA-yiVB6c01zT-JDfmo3ZMJh6HgnkAVGFr/exec';
+var ADMIN = '0907';
+
+/* ── GHOST ── */
+var ghosts=['👻','💀','🕷️','🦇','🕯️','🌙','⚰️','🖤'];
+var bg=document.getElementById('ghostBg');
+for(var i=0;i<20;i++){
+  var g=document.createElement('div');g.className='ghost';
+  g.textContent=ghosts[Math.floor(Math.random()*ghosts.length)];
+  g.style.left=Math.random()*100+'%';
+  g.style.fontSize=(1.2+Math.random()*2)+'rem';
+  g.style.animationDuration=(12+Math.random()*18)+'s';
+  g.style.animationDelay=(Math.random()*15)+'s';
+  bg.appendChild(g);
+}
+
+/* ── 상태 ── */
+var msgs=[];
+var isAdmin=false;
+var pendingId='';
+var pendingAction='';
+var pendingPwHash='';
+
+/* ── 유틸 ── */
+function simpleHash(str){
+  var h=0;
+  for(var i=0;i<str.length;i++){h=(Math.imul(31,h)+str.charCodeAt(i))|0;}
+  return h.toString(36);
+}
+function pad(n){return String(n).padStart(2,'0');}
+function showLoading(){
+  var list=document.getElementById('msgList');
+  list.innerHTML='';
+  var d=document.createElement('div');d.className='loading';
+  var s=document.createElement('span');s.className='spinner';
+  d.appendChild(s);d.appendChild(document.createTextNode(' 불러오는 중...'));
+  list.appendChild(d);
+}
+function showErr(msg){
+  var list=document.getElementById('msgList');
+  list.innerHTML='';
+  var d=document.createElement('div');d.className='loading';
+  d.style.color='var(--red)';d.textContent=msg;
+  list.appendChild(d);
+}
+
+/* ── API: GET 파라미터 방식 ── */
+function apiGet(params, cb){
+  var qs=Object.keys(params).map(function(k){
+    return encodeURIComponent(k)+'='+encodeURIComponent(params[k]);
+  }).join('&');
+  var url=API+'?'+qs;
+
+  fetch(url,{method:'GET',redirect:'follow'})
+    .then(function(r){
+      // Apps Script는 리다이렉트 후 실제 JSON 반환
+      return r.text();
+    })
+    .then(function(text){
+      try{cb(null,JSON.parse(text));}
+      catch(e){cb(new Error('parse: '+text.slice(0,100)),null);}
+    })
+    .catch(function(e){cb(e,null);});
+}
+
+/* ── API: POST 방식 (add/edit/delete) ── */
+function apiPost(params, cb){
+  fetch(API,{
+    method:'POST',
+    headers:{'Content-Type':'text/plain'},
+    body:JSON.stringify(params),
+    redirect:'follow'
+  })
+    .then(function(r){return r.text();})
+    .then(function(text){
+      try{cb(null,JSON.parse(text));}
+      catch(e){cb(new Error('parse: '+text.slice(0,100)),null);}
+    })
+    .catch(function(e){cb(e,null);});
+}
+
+/* ── 불러오기 ── */
+function loadMsgs(){
+  showLoading();
+  apiGet({action:'getAll'},function(err,data){
+    if(err||!data||!data.ok){
+      showErr('⚠️ 불러오기 실패. 새로고침 해봐! ('+(err?err.message:'서버 오류')+')');
+      return;
+    }
+    msgs=data.msgs||[];
+    render();
+  });
+}
+loadMsgs();
+
+/* ── 렌더 ── */
+function render(){
+  var list=document.getElementById('msgList');
+  var count=document.getElementById('msgCount');
+  count.textContent=msgs.length+'개';
+  list.innerHTML='';
+  document.getElementById('adminBar').style.display=isAdmin?'flex':'none';
+
+  if(msgs.length===0){
+    var empty=document.createElement('div');empty.className='empty-state';
+    var ei=document.createElement('span');ei.style.fontSize='3rem';ei.style.display='block';ei.style.marginBottom='12px';ei.style.opacity='.5';ei.textContent='👻';
+    var et=document.createElement('p');et.textContent='아직 아무도 없어... 첫 번째로 남겨줘 🕯️';
+    empty.appendChild(ei);empty.appendChild(et);
+    list.appendChild(empty);
+    return;
+  }
+
+  msgs.slice().reverse().forEach(function(m,di){
+    var card=document.createElement('div');card.className='msg-card';
+    card.style.animationDelay=(di*0.05)+'s';
+
+    var top=document.createElement('div');top.className='msg-top';
+    var name=document.createElement('div');name.className='msg-name';name.textContent='👻 '+m.name;
+    var time=document.createElement('div');time.className='msg-time';time.textContent=m.time;
+    top.appendChild(name);top.appendChild(time);
+
+    var text=document.createElement('div');text.className='msg-text';text.textContent=m.text;
+
+    var actions=document.createElement('div');actions.className='msg-actions';
+    var editBtn=document.createElement('button');editBtn.className='act-btn edit';editBtn.textContent='✏️ 수정';
+    var delBtn=document.createElement('button');delBtn.className='act-btn del';delBtn.textContent='🗑️ 삭제';
+
+    (function(id,pwHash){
+      editBtn.onclick=function(){requestAction(id,pwHash,'edit');};
+      delBtn.onclick=function(){requestAction(id,pwHash,'delete');};
+    })(m.id,m.pwHash);
+
+    actions.appendChild(editBtn);actions.appendChild(delBtn);
+    card.appendChild(top);card.appendChild(text);card.appendChild(actions);
+    list.appendChild(card);
+  });
+}
+
+/* ── 제출 ── */
+window.submitMsg=function(){
+  var nameEl=document.getElementById('fName');
+  var pwEl=document.getElementById('fPw');
+  var msgEl=document.getElementById('fMsg');
+  var errEl=document.getElementById('fErr');
+  var okEl=document.getElementById('fOk');
+  var btn=document.getElementById('submitBtn');
+  var name=nameEl.value.trim();
+  var pw=pwEl.value.trim();
+  var text=msgEl.value.trim();
+  errEl.style.display='none';okEl.style.display='none';
+
+  // 관리자 로그인
+  if(name===ADMIN){
+    isAdmin=true;nameEl.value='';pwEl.value='';
+    render();return;
+  }
+
+  if(!name){errEl.textContent='이름을 입력해줘 👻';errEl.style.display='block';nameEl.focus();return;}
+  if(!pw){errEl.textContent='비밀번호는 꼭 설정해야 해! 🔑';errEl.style.display='block';pwEl.focus();return;}
+  if(!text){errEl.textContent='메시지를 입력해줘 🕯️';errEl.style.display='block';msgEl.focus();return;}
+
+  btn.disabled=true;btn.textContent='전송 중...';
+  var now=new Date();
+  var time=now.getFullYear()+'.'+pad(now.getMonth()+1)+'.'+pad(now.getDate())+' '+pad(now.getHours())+':'+pad(now.getMinutes());
+
+  apiPost({action:'add',name:name,text:text,time:time,pwHash:simpleHash(pw)},function(err,data){
+    btn.disabled=false;btn.textContent='👻 메시지 남기기';
+    if(err||!data||!data.ok){
+      errEl.textContent='⚠️ 전송 실패! ('+(err?err.message:'서버 오류')+')';
+      errEl.style.display='block';return;
+    }
+    nameEl.value='';pwEl.value='';msgEl.value='';
+    okEl.style.display='block';
+    setTimeout(function(){okEl.style.display='none';},3000);
+    loadMsgs();
+  });
+};
+
+/* ── 관리자 ── */
+window.adminLogout=function(){isAdmin=false;render();};
+
+/* ── 액션 요청 ── */
+function requestAction(id,pwHash,action){
+  pendingId=id;pendingAction=action;pendingPwHash=pwHash;
+  if(isAdmin){executeAction();return;}
+  document.getElementById('pwModalTitle').textContent=action==='edit'?'✏️ 수정 — 비밀번호 확인':'🗑️ 삭제 — 비밀번호 확인';
+  document.getElementById('pwInput').value='';
+  document.getElementById('pwErr').style.display='none';
+  document.getElementById('pwModal').classList.add('open');
+  setTimeout(function(){document.getElementById('pwInput').focus();},100);
+}
+
+window.confirmPw=function(){
+  var pw=document.getElementById('pwInput').value.trim();
+  if(!pw)return;
+  if(simpleHash(pw)!==pendingPwHash){
+    document.getElementById('pwErr').style.display='block';
+    document.getElementById('pwInput').value='';
+    document.getElementById('pwInput').focus();return;
+  }
+  closePwModal();executeAction();
+};
+window.closePwModal=function(){document.getElementById('pwModal').classList.remove('open');};
+
+function executeAction(){
+  if(pendingAction==='edit'){
+    var m=null;
+    for(var i=0;i<msgs.length;i++){if(msgs[i].id===pendingId){m=msgs[i];break;}}
+    if(!m)return;
+    document.getElementById('editText').value=m.text;
+    document.getElementById('editModal').classList.add('open');
+    setTimeout(function(){document.getElementById('editText').focus();},100);
+  } else {
+    doDelete();
+  }
+}
+
+/* ── 수정 ── */
+window.confirmEdit=function(){
+  var newText=document.getElementById('editText').value.trim();
+  if(!newText)return;
+  var btn=document.getElementById('editConfirmBtn');
+  btn.disabled=true;btn.textContent='저장 중...';
+  apiPost({
+    action:'edit',id:pendingId,text:newText,
+    pwHash:pendingPwHash,isAdmin:isAdmin?'true':'false'
+  },function(err,data){
+    btn.disabled=false;btn.textContent='💾 저장';
+    if(err||!data||!data.ok)return;
+    closeEditModal();loadMsgs();
+  });
+};
+window.closeEditModal=function(){
+  document.getElementById('editModal').classList.remove('open');
+  pendingId='';pendingAction='';pendingPwHash='';
+};
+
+/* ── 삭제 ── */
+function doDelete(){
+  apiPost({
+    action:'delete',id:pendingId,
+    pwHash:pendingPwHash,isAdmin:isAdmin?'true':'false'
+  },function(err,data){
+    if(err||!data||!data.ok)return;
+    pendingId='';pendingAction='';pendingPwHash='';
+    loadMsgs();
+  });
+}
+
+document.getElementById('pwModal').addEventListener('click',function(e){if(e.target===this)closePwModal();});
+document.getElementById('editModal').addEventListener('click',function(e){if(e.target===this)closeEditModal();});
+
+})();
+</script>
+</body>
+</html>
